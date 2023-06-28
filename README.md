@@ -70,11 +70,17 @@ user data - use sonarqube-setup.sh file
 ## Jenkins Pipeline
 ### STEP 2 - Install plugins for Jenkins
 Go to Jenkins Browser to the main page (Dashboard) and on the left bar menu choose Manage Jenkins.
+
 Then go to plugins page and mark the "Available plugins". In the search bar look for the following plugins and mark them:
+
 Nexus Artifact Uploader
+
 SonnarQube Scanner
+
 Build TimeStamp
+
 Pipeline Maven integration
+
 Pipeline Utility Steps
 
 Install without restart
@@ -96,13 +102,39 @@ Jenkins Dashboard > Manage Jenkins > System
 SonarQube servers > (Enable) Environment variables | Add SonarQube > Name: sonar | Server URL: https://sonar-server public IP port 9000 > SAVE
 
 To get token go to SonarQube browser and login with admin/admin. Click the A square on top right corner > My Account > Security (tab) | Generate Tokens > jenkins > Generate.
+
 Copy the token and go back to jenkins browser
 
 Jenkins Dashboard > Manage Jenkins > System > SonarQube servers > Server authentication token > Add - jenkins > Kind: Secret text | ID&Description: MySonarToken > Add
+
 Choose MySonarToken > SAVE
 
 ### STEP 5 - Define Quality Gates in SonarQube
 SonarQube Browser
+
 Quality Gates (Top Navigation bar) > Create > Name: vprofile-QG > SAVE
+
 Add Condition > On Overall Code | Quality Gate fails when: Bugs | is greater than: 100 > Add Condition
+
+IN ORDER FOR THE QUALITY GATE TO WORK WE NEED TO INITIATE A JENKINS JOB AND BUILD, SO THE PROJECT WILL APPEAR IN SONARQUBE
+
+Jenkins Browser > New Job > Name: PAAC | Pipeline > OK |> Scroll down to Pipeline script and copy the jenkins full pipeline script > SAVE > Build Now (The Build will fail at some point)
+
+Back to SonarQube Browser > Projects (Top Nav-Bar) > Click on project name (vprofile) > Project settings > Quality Gate > vprofile-QG
+
+Project settings > Webhooks > Create > Name: jenkins-ci-webhooks | URL: http://jenkins-server public IP : Port | (Secret - leave empty) > Create
+
+### STEP 6 - Define Nexus Repository with Jenkins
+Nexus Browser
+
+Sign in - follow instructions to get initial password > user: admin | password: initial password > Next > set new password > Next > Enable Anonymous Access > Next > Finish
+We click on the wheel for configuration > on left menu - Repositories > Create repository > Maven2 (Hosted) > Name: vprofile-repo > Create repository
+
+Jenkins Browser
+
+Dashboard > Manage Jenkins > Credentials > Stores scoped to Jenkins - System > Global credentials > Add Credentials > Kind: User name with password | Username/Password: | Id & Description: NexusLogin > Create
+
+## STEP 7 - Jenkins Build
+
+
 

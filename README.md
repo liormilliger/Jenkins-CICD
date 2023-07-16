@@ -15,6 +15,10 @@ AWS account
 
 Connect to your AWS account and Launch 3 instances as follows:
 (use scripts from userdata folder in this repository)
+##### A note regarding Security groups: 
+##### > NEVER open ports to "anywhere" - it's here for the ease of use and practice only!
+##### > always better using https with the proper ACM attached rather than http
+
 #### Jenkins Server
 Ubuntu OS//t2.small
 
